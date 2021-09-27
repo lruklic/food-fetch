@@ -1,0 +1,24 @@
+{
+  "name": "foodfetch",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.6.0",
+    "@slack/events-api": "^3.0.1",
+    "@slack/web-api": "^6.4.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
+    "express": "~4.16.1",
+    "fbgraph": "^1.4.4",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11",
+    "puppeteer": "^10.4.0",
+    "tesseract.js": "^2.1.5"
+  }
+}
