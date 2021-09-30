@@ -1,4 +1,4 @@
-﻿var express = require('express');
+var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
 
@@ -15,9 +15,9 @@ router.get('/fetch', function(req, res, next) {
         if (body[i].indexOf("SVAKODNEVNO") > -1) break;
         todayMeals["rhouse"].push(body[i]);
       }
-
+  
       ocr().then(function(ocrBody) {
-        for (var i = 1; i < ocrBody.length; i++) { 
+        for (var i = 0; i < ocrBody.length; i++) { 
           todayMeals["spareribs"].push(ocrBody[i]);
         }
         globalStorage.menuToday = todayMeals;
