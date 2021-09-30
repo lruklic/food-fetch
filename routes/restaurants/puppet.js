@@ -1,14 +1,36 @@
 var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
+const cron = require('node-cron');
 
 var router = express.Router();
 
 var globalStorage = {"menuToday" : {}};
 
+cron.schedule('30 09 * * 1-5', function() {
+  console.log("Fetching daily data for lunch");
+  fetchData();
+});
+
 /* GET home page. */
 router.get('/fetch', function(req, res, next) {
-    var todayMeals = {"rhouse" : [], "spareribs" : []};
+  fetchData().then(function(todayMeals) {
+    res.render('index', { title: JSON.stringify(todayMeals, null) });
+  });
+});
+
+function fetchData() {
+  var todayMeals = {"rhouse" : [], "spareribs" : []};
+
+  return new Promise((resolve, reject) => {
+
+/*     ocr().then(function(ocrBody) {
+      for (var i = 0; i < ocrBody.length; i++) { 
+        todayMeals["spareribs"].push(ocrBody[i]);
+      }
+      globalStorage.menuToday = todayMeals;
+      return resolve(todayMeals);
+    }); */
 
     screenshot().then(function(body) {
       for (var i = 1; i < body.length; i++) { 
@@ -21,10 +43,14 @@ router.get('/fetch', function(req, res, next) {
           todayMeals["spareribs"].push(ocrBody[i]);
         }
         globalStorage.menuToday = todayMeals;
-        res.render('index', { title: JSON.stringify(todayMeals, null, 3) });
+  
+        return resolve(todayMeals);
       });
     }); 
-});
+
+  });
+
+}
 
 router.get('/json', function(req, res, next) {
   res.json(globalStorage);
