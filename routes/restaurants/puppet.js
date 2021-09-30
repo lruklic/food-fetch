@@ -113,7 +113,7 @@ async function screenshot(){
   
     // Load FB rhouse content
     await page.goto('https://facebook.com')
-    console.log("Waiting f")
+    console.log("Waiting for FB load")
     await page.screenshot({path: 'state1.png'});  
     await page.waitForTimeout(2000)
     await page.click('button[data-testid="cookie-policy-dialog-accept-button"]');
@@ -152,7 +152,6 @@ async function screenshot(){
         var lines = [];
       
         setTimeout(function(){
-          console.log("radim nesto")
           for (var i = 0; i < postParent.children.length; i++) { 
             var line = "";
             for (var j = 0; j < postParent.children[i].children.length; j++) {
