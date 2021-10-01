@@ -5,6 +5,8 @@ const cron = require('node-cron');
 
 var router = express.Router();
 
+router.use(express.json());
+
 var globalStorage = {"menuToday" : {}};
 
 cron.schedule('20 09 * * 1-5', function() {
@@ -17,6 +19,11 @@ router.get('/fetch', function(req, res, next) {
   fetchData().then(function(todayMeals) {
     res.render('index', { title: JSON.stringify(todayMeals, null) });
   });
+});
+
+router.post('/fetch', function(req, res, next) {
+  globalStorage.menuToday = req.body;
+  res.send(200);
 });
 
 function fetchData() {
