@@ -84,6 +84,11 @@ async function ocr() {
   
         for (var i = 2; i < lines.length; i++) {  // skip metadata 0 and dates 1
           
+          if (lines[i].replace(/\s/g, '').startsWith("KREMŠNITA") || lines[i].replace(/\s/g, '').startsWith("CHEESECAKE") || 
+                lines[i].replace(/\s/g, '').startsWith("ALKAZAR") || lines[i].replace(/\s/g, '').startsWith("DODATAK")) {
+                  continue;
+          }
+
           if (lines[i].indexOf("SearchablePDFURL") > -1) {
             break;
           }
