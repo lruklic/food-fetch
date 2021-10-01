@@ -7,7 +7,7 @@ var router = express.Router();
 
 var globalStorage = {"menuToday" : {}};
 
-cron.schedule('30 09 * * 1-5', function() {
+cron.schedule('20 09 * * 1-5', function() {
   console.log("Fetching daily data for lunch");
   fetchData();
 });
