@@ -110,7 +110,7 @@ async function ocr() {
           } else if (lines[i].replace(/\s/g, '') == "SRIJEDA") {
             day = 2;
             continue;
-          } else if (lines[i].replace(/\s/g, '') == "ČETVRTAK") {
+          } else if (lines[i].replace(/\s/g, '') == "ČETVRTAK" || lines[i].replace(/\s/g, '') == "CETVRTAK") {
             day = 3;
             continue;
           } else if (lines[i].replace(/\s/g, '') == "PETAK") {
