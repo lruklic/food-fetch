@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
 const cron = require('node-cron');
@@ -124,7 +124,7 @@ async function ocr() {
 
           multilineMeal += lines[i];
   
-          var priceReg = /([0-9]{1,2},)/g;
+          var priceReg = /([0-9]{1,2}[,|.])/g;
           if (multilineMeal.match(priceReg) != null) {
             menu[day].push(multilineMeal);
             multilineMeal = "";
