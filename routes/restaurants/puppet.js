@@ -85,7 +85,7 @@ async function ocr() {
       response.on('end', function () {
         var lines = str.split("\\r\\n");
   
-        var day = 0;
+        var day = -1;
         var menu = {"0" : [], "1" : [], "2" : [], "3" : [], "4" : []};
         var multilineMeal = "";
   
@@ -118,6 +118,10 @@ async function ocr() {
             continue;
           }
   
+          if (day == -1) {
+            continue;
+          }
+
           multilineMeal += lines[i];
   
           var priceReg = /([0-9]{1,2},)/g;
