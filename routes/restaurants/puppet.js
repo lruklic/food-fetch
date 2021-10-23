@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.use(express.json());
 
-var globalStorage = {"menuToday" : {}};
+var globalStorage = {"menuToday" : {"rhouse" : [], "spareribs" : []}};
 
 cron.schedule('20 09 * * 1-5', function() {
   console.log("Fetching daily data for lunch");
@@ -24,6 +24,15 @@ router.get('/fetch', function(req, res, next) {
 router.post('/fetch', function(req, res, next) {
   globalStorage.menuToday = req.body;
   res.send(200);
+});
+
+router.get('/fetch/restaurant/spareribs', function(req, res, next) {
+    ocr().then(function(ocrBody) {
+      for (var i = 0; i < ocrBody.length; i++) { 
+        globalStorage.menuToday["spareribs"].push(ocrBody[i]);
+      }
+      res.json(globalStorage.menuToday["spareribs"]);
+    });
 });
 
 function fetchData() {
