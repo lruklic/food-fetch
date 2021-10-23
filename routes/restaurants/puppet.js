@@ -1,4 +1,4 @@
-﻿var express = require('express');
+var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
 const cron = require('node-cron');
@@ -138,7 +138,10 @@ async function ocr() {
         console.log(menu);
         console.log(new Date().getDay());
 
-        resolve(menu[new Date().getDay() - 1]);
+
+        var currentDay = (new Date().getDay() > 5 ? 4 : new Date().getDay() - 1);
+
+        resolve(menu[currentDay]);    
       });
     }
   
