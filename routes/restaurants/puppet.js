@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
 const cron = require('node-cron');
@@ -8,6 +8,11 @@ var router = express.Router();
 router.use(express.json());
 
 var globalStorage = {"menuToday" : {"rhouse" : [], "spareribs" : []}};
+
+cron.schedule('1 0 * * *', function() {
+  console.log("Cleaning the menu from the previous day");
+  globalStorage = {"menuToday" : {"rhouse" : [], "spareribs" : []}};
+});
 
 cron.schedule('20 09 * * 1-5', function() {
   console.log("Fetching daily data for lunch");
