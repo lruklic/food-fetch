@@ -1,4 +1,4 @@
-﻿var express = require('express');
+var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
 const cron = require('node-cron');
@@ -85,6 +85,7 @@ async function ocr() {
     var options = {
       host: 'api.ocr.space',
       path: '/parse/imageurl?apikey=e4d9ec26e888957&url=https://i.ibb.co/cy2D2qh/245329501-2910546615872122-7645732243483599165-n.jpg&language=hrv&scale=true'
+      timeout : 15000
     };
   
     callback = function(response) {
@@ -163,7 +164,12 @@ async function ocr() {
       });
     }
   
-    http.request(options, callback).end();
+    const request = http.request(options, callback).end();
+
+    request.on('timeout', function() {
+      console.log("timeout occurred");
+      request.end(); 
+    })
   });
 
 }
