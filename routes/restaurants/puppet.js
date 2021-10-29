@@ -160,7 +160,19 @@ async function ocr() {
           currentDay -= 1;
         }
 
-        resolve(menu[currentDay]);    
+        var currentDayMenu = menu[currentDay];
+        
+        if (currentDayMenu.length > 0) {
+          currentDayMenu.forEach(function(menuItem, index) {
+            var correctedItem = menuItem
+              .replaceAll(" 1 ", " I ")
+              .replaceAll(",oo", ",00")
+              .replaceAll(",OO", ",00");
+            this[index] = correctedItem; 
+          }, currentDayMenu);
+        }
+
+        resolve(currentDayMenu);    
       });
     }
   
