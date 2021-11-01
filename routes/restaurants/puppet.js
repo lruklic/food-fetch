@@ -196,6 +196,14 @@ async function ocr() {
 
 }
 
+async function vujcaFetch() {
+  const browser = await puppeteer.launch({ headless: false, devtools: true });
+  var [page] = await browser.pages();
+  await page.setViewport({ width: 1366, height: 768});
+  await page.goto('https://jambresic.com/gableci/');
+  await page.waitForNavigation();
+}
+
 async function rhouseFetch() {
   const browser = await puppeteer.launch({ headless: false, devtools: true });
   var [page] = await browser.pages();
