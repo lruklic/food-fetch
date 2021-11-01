@@ -40,6 +40,16 @@ router.get('/fetch/restaurant/spareribs', function(req, res, next) {
     });
 });
 
+router.get('/fetch/restaurants/rhouse', function(req, res, next) {
+  rhouseFetch().then(function(body) {
+    for (var i = 0; i < body.length; i++) { 
+      if (body[i].toUpperCase().indexOf("SVAKODNEVNO") > -1) break;
+      globalStorage.menuToday["rhouse"].push(body[i]);
+    }
+    res.json(globalStorage.menuToday["rhouse"]);
+  })
+});
+
 function fetchData() {
   var todayMeals = {"rhouse" : [], "spareribs" : []};
 
@@ -184,6 +194,67 @@ async function ocr() {
     })
   });
 
+}
+
+async function rhouseFetch() {
+  const browser = await puppeteer.launch({ headless: false, devtools: true });
+  var [page] = await browser.pages();
+  await page.setViewport({ width: 1366, height: 768});
+  await page.goto('https://facebook.com/rhousezg');
+  await page.waitForTimeout(5000);
+  await page.click('button[data-testid="cookie-policy-dialog-accept-button"]');
+  await page.waitForTimeout(3000);
+
+  let result = await page.evaluate(() => new Promise((resolve) => {
+    
+    console.log("Actions on the page")
+    
+    console.log("Entered the evaluate")
+    var buttons = document.querySelectorAll('a[class="see_more_link"]');
+
+    var seeMoreButtons = [];
+    for (var i = 0; i < buttons.length; i++) {
+      if (buttons[i].textContent.toLocaleLowerCase() == "prikaži više" || buttons[i].textContent.toLocaleLowerCase() == "see more") { 
+        seeMoreButtons.push(buttons[i]) 
+      };
+    }
+  
+    if (seeMoreButtons[1]) {
+      var postParent = seeMoreButtons[1].parentElement.parentElement.parentElement;
+      seeMoreButtons[1].click();
+      var lines = [];
+
+      setTimeout(function(){
+        for (var i = 0; i < postParent.children.length; i++) { 
+          //debugger;
+          var line = "";
+          if (postParent.children[i].nodeName == "P") {
+            line = postParent.children[i].textContent;
+          } else if (postParent.children[i].classList.value.indexOf("text_exposed_hide") > -1) {
+            continue;
+          } else {
+            for (var j = 0; j < postParent.children[i].children.length; j++) {
+              var content = postParent.children[i].children[j].textContent;
+              lines.push(content.trim());
+            }
+          }
+
+          lines.push(line);
+        }
+  
+        console.log(lines);
+        return resolve(lines);
+        
+      }, 2500);
+    } else {
+      return resolve([]);
+    }
+
+  }));
+
+  await browser.close();
+
+  return result;
 }
 
 async function screenshot(){
