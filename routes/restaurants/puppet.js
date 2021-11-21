@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
 const cron = require('node-cron');
@@ -31,7 +31,7 @@ router.post('/fetch', function(req, res, next) {
   res.send(200);
 });
 
-router.get('/fetch/restaurant/spareribs', function(req, res, next) {
+router.get('/fetch/restaurants/spareribs', function(req, res, next) {
     ocr().then(function(ocrBody) {
       for (var i = 0; i < ocrBody.length; i++) { 
         globalStorage.menuToday["spareribs"].push(ocrBody[i]);
@@ -94,7 +94,7 @@ async function ocr() {
     // TODO read image link from their page
     var options = {
       host: 'api.ocr.space',
-      path: '/parse/imageurl?apikey=e4d9ec26e888957&url=https://i.ibb.co/cy2D2qh/245329501-2910546615872122-7645732243483599165-n.jpg&language=hrv&scale=true'
+      path: '/parse/imageurl?apikey=e4d9ec26e888957&url=https://i.ibb.co/q0L0N33/ribs.jpg&language=hrv&scale=true',
       timeout : 15000
     };
   
@@ -205,7 +205,7 @@ async function vujcaFetch() {
 }
 
 async function rhouseFetch() {
-  const browser = await puppeteer.launch({ headless: false, devtools: true });
+  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']}); // { headless: false, devtools: true }
   var [page] = await browser.pages();
   await page.setViewport({ width: 1366, height: 768});
   await page.goto('https://facebook.com/rhousezg');
