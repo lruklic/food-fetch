@@ -1,4 +1,4 @@
-﻿var express = require('express');
+var express = require('express');
 const puppeteer = require('puppeteer')
 const http = require('http');
 const cron = require('node-cron');
@@ -280,9 +280,9 @@ async function screenshot(){
     console.log("Waiting for input")
     await page.waitForTimeout(2000);
     await page.screenshot({path: 'state2.png'});  
-    await page.$eval('#email', el => el.value = 'inge.brismarc@protonmail.com');
+    await page.$eval('#email', el => el.value = process.env.FB_TEST_USERNAME);
     await page.waitForTimeout(2245);
-    await page.$eval('#pass', el => el.value = 'Brzosamnazad!!');
+    await page.$eval('#pass', el => el.value = process.env.FB_TEST_PASSWORD);
     await page.screenshot({path: 'state3.png'});  
     await page.waitForTimeout(1100);
     await page.click('button[data-testid="royal_login_button"]');
